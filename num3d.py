@@ -316,7 +316,7 @@ class Num3D:
     def i(self:None) -> 'Num3D':
         """Sumbu (i, j) di bidang 2D."""
         if self is None:
-            return Num3D(1, 0, 0)
+            return Num3D(0, 1, 0)
         cosu = self.cos()
         sinu = self.sin()
         return Num3D(
