@@ -422,20 +422,51 @@ class Num3D:
         term3 = axis * (axis.dot(v) * (1 - cos_a))
         return term1 + term2 + term3
 
-    
-    # ---------- BASIS GEOMETRI {r, g, b} ----------
+    # ---------- BASIS GEOMETRI {a, b, c} ----------
     @classmethod
-    def from_rgb(cls, A, B, C):
-        z = (A + B + C) / cls.SQRT3
-        x = (2 * A - B - C) / cls.SQRT6
-        y = (B - C) / cls.SQRT2
+    def from_abc(cls, A, B, C):
+        sq6 = 1/ cls.SQRT6
+        sq2 = cls.SQRT3 * sq6
+        sq3 = cls.SQRT2 * sq6
+        z = (A + B + C) * sq3
+        x = (2 * A - B - C) *sq6
+        y = (B - C) * sq2
         return cls(z, x, y)
 
-    def to_rgb(self):
-        A = self.z / self.SQRT3 + 2 * self.x / self.SQRT6
-        B = self.z / self.SQRT3 - self.x / self.SQRT6 + self.y / self.SQRT2
-        C = self.z / self.SQRT3 - self.x / self.SQRT6 - self.y / self.SQRT2
+    def to_abc(self):
+        sq6 = 1/ self.SQRT6
+        sq2 = self.SQRT3 * sq6
+        sq3 = self.SQRT2 * sq6
+        A = self.z * sq3 + 2 * self.x * sq6
+        B = self.z * sq3 - self.x * sq6 + self.y * sq2
+        C = self.z * sq3 - self.x * sq6 - self.y * sq2
         return A, B, C
+
+    def abc_str(self, decimals=4):
+        A, B, C = self.to_abc()
+        parts = []
+        if abs(A) > 1e-12:
+            parts.append(f"{A:.{decimals}f} a")
+        if abs(B) > 1e-12:
+            parts.append(f"{B:.{decimals}f} b")
+        if abs(C) > 1e-12:
+            parts.append(f"{C:.{decimals}f} c")
+        return " + ".join(parts) if parts else "0"
+    
+    # ---------- BASIS COLOUR {r, g, b} ----------
+    @classmethod
+    def from_rgb(cls, Mer, Hij, Bir):
+        A = 2*Mer - 1
+        B = 2*Hij - 1
+        C = 2*Bir - 1
+        return cls.from_abc(A, B, C)
+    
+    def to_rgb(self):
+        A, B, C = self.to_abc()
+        Mer = (A + 1) * 0.5
+        Hij = (B + 1) * 0.5
+        Bir = (C + 1) * 0.5
+    return Mer, Hij, Bir
 
     def rgb_str(self, decimals=4):
         A, B, C = self.to_rgb()
@@ -507,11 +538,15 @@ def i():
 def j():
     return Num3D(0, 0, 1)
 
-def r():
+def mer():
     return Num3D.from_rgb(1, 0, 0)
-
-def g():
+def hij():
     return Num3D.from_rgb(0, 1, 0)
-
-def b():
+def bir():
     return Num3D.from_rgb(0, 0, 1)
+def a():
+    return Num3D.from_abc(1, 0, 0)
+def b():
+    return Num3D.from_abc(0, 1, 0)
+def c():
+    return Num3D.from_abc(0, 0, 1)
