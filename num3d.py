@@ -423,23 +423,30 @@ class Num3D:
         return term1 + term2 + term3
 
     
-    # ---------- BASIS GEOMETRI {a, b, c} ----------
+    # ---------- BASIS GEOMETRI {r, g, b} ----------
     @classmethod
-    def from_abc(cls, A, B, C):
+    def from_rgb(cls, A, B, C):
         z = (A + B + C) / cls.SQRT3
         x = (2 * A - B - C) / cls.SQRT6
         y = (B - C) / cls.SQRT2
         return cls(z, x, y)
 
-    def to_abc(self):
+    def to_rgb(self):
         A = self.z / self.SQRT3 + 2 * self.x / self.SQRT6
         B = self.z / self.SQRT3 - self.x / self.SQRT6 + self.y / self.SQRT2
         C = self.z / self.SQRT3 - self.x / self.SQRT6 - self.y / self.SQRT2
         return A, B, C
 
-    def abc_str(self, decimals=4):
+    def rgb_str(self, decimals=4):
         A, B, C = self.to_abc()
-        return f"a:{A:.{decimals}f}, b:{B:.{decimals}f}, c:{C:.{decimals}f}"
+        parts = []
+        if abs(A) > 1e-12:
+            parts.append(f"{A:.{decimals}f} r")
+        if abs(B) > 1e-12:
+            parts.append(f"{B:.{decimals}f} g")
+        if abs(C) > 1e-12:
+            parts.append(f"{C:.{decimals}f} b")
+        return " + ".join(parts) if parts else "0"
 
     @classmethod
     def identity(cls):
@@ -500,11 +507,11 @@ def i():
 def j():
     return Num3D(0, 0, 1)
 
-def a():
-    return Num3D.from_abc(1, 0, 0)
+def r():
+    return Num3D.from_rgb(1, 0, 0)
+
+def g():
+    return Num3D.from_rgb(0, 1, 0)
 
 def b():
-    return Num3D.from_abc(0, 1, 0)
-
-def c():
-    return Num3D.from_abc(0, 0, 1)
+    return Num3D.from_rgb(0, 0, 1)
