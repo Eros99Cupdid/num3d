@@ -466,7 +466,7 @@ class Num3D:
         Mer = (A + 1) * 0.5
         Hij = (B + 1) * 0.5
         Bir = (C + 1) * 0.5
-    return Mer, Hij, Bir
+        return Mer, Hij, Bir
 
     def rgb_str(self, decimals=4):
         A, B, C = self.to_rgb()
