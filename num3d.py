@@ -438,7 +438,7 @@ class Num3D:
         return A, B, C
 
     def rgb_str(self, decimals=4):
-        A, B, C = self.to_abc()
+        A, B, C = self.to_rgb()
         parts = []
         if abs(A) > 1e-12:
             parts.append(f"{A:.{decimals}f} r")
