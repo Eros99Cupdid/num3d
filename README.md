@@ -1,2 +1,2 @@
 # num3d
-Memperkenalkan Matematika yang memberikan semua kemungkinan solusi untuk Axioma: (-1)^(1/2) memiliki solusi ortogonal terhadap garis skalar real.
+Memperkenalkan Matematika yang memberikan semua kemungkinan solusi untuk Axioma: 1 + x^2 = 0 memiliki solusi ortogonal terhadap garis skalar real.
